@@ -10,11 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/mesurement')]
 final class MesurementController extends AbstractController
 {
     #[Route(name: 'app_mesurement_index', methods: ['GET'])]
+    #[IsGranted('ROLE_MESUREMENT_INDEX')]
     public function index(MesurementRepository $mesurementRepository): Response
     {
         return $this->render('mesurement/index.html.twig', [
@@ -23,6 +25,7 @@ final class MesurementController extends AbstractController
     }
 
     #[Route('/new', name: 'app_mesurement_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_MESUREMENT_NEW')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $mesurement = new Mesurement();
@@ -45,6 +48,7 @@ final class MesurementController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_mesurement_show', methods: ['GET'])]
+    #[IsGranted('ROLE_MESUREMENT_SHOW')]
     public function show(Mesurement $mesurement): Response
     {
         return $this->render('mesurement/show.html.twig', [
@@ -53,6 +57,7 @@ final class MesurementController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_mesurement_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_MESUREMENT_EDIT')]
     public function edit(Request $request, Mesurement $mesurement, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(MesurementType::class, $mesurement, [
@@ -73,6 +78,7 @@ final class MesurementController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_mesurement_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_MESUREMENT_DELETE')]
     public function delete(Request $request, Mesurement $mesurement, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$mesurement->getId(), $request->getPayload()->getString('_token'))) {
