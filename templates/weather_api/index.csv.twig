@@ -1,0 +1,4 @@
+city,country,date,celsius,fahrenheit
+{% for measurement in measurements -%}
+"{{ city|replace({'"': '""'})|raw }}","{{ country|replace({'"': '""'})|raw }}","{{ (measurement.date ? measurement.date|date('Y-m-d') : '')|raw }}","{{ measurement.celsius|replace({'"': '""'})|raw }}","{{ measurement.fahrenheit|raw }}"
+{% endfor -%}

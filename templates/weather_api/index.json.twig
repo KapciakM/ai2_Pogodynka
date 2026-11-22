@@ -1,0 +1,13 @@
+{
+  "city": "{{ city|replace({'\\': '\\\\', '"': '\\"', "\r": '\\r', "\n": '\\n'})|raw }}",
+  "country": "{{ country|replace({'\\': '\\\\', '"': '\\"', "\r": '\\r', "\n": '\\n'})|raw }}",
+  "measurements": [
+{% for measurement in measurements %}
+    {
+      "date": "{{ (measurement.date ? measurement.date|date('Y-m-d') : '')|raw }}",
+      "celsius": "{{ measurement.celsius|raw }}",
+      "fahrenheit": "{{ measurement.fahrenheit|raw }}"
+    }{% if not loop.last %},{% endif %}
+{% endfor %}
+  ]
+}
